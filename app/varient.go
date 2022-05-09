@@ -103,6 +103,37 @@ func UpdateVarient(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(result)
 }
 
+// Update Varient Status
+
+func UpdateVarientStatus(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json")
+
+	type updateBody struct {
+		VId     string `json:"vid"`     //value that has to be matched
+		Vstatus bool   `json:"vstatus"` // value that has to be modified
+	}
+	var body updateBody
+	e := json.NewDecoder(r.Body).Decode(&body)
+	if e != nil {
+
+		fmt.Print(e)
+	}
+	filter := bson.D{{"vid", body.VId}} // converting value to BSON type
+	after := options.After              // for returning updated document
+	returnOpt := options.FindOneAndUpdateOptions{
+
+		ReturnDocument: &after,
+	}
+	update := bson.D{{"$set", bson.D{{"vstatus", body.Vstatus}}}}
+	updateResult := categoryCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
+
+	var result primitive.M
+	_ = updateResult.Decode(&result)
+
+	json.NewEncoder(w).Encode(result)
+}
+
 //Delete Varient of Varient Id
 
 func DeleteVarient(w http.ResponseWriter, r *http.Request) {
