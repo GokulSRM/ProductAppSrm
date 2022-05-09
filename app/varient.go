@@ -94,7 +94,7 @@ func UpdateVarient(w http.ResponseWriter, r *http.Request) {
 
 		ReturnDocument: &after,
 	}
-	update := bson.D{{"$set", bson.D{{"vname", body.Vname},{"vdesc", body.Vdesc},{"vmodifiedby", body.Vmodifiedby}}}}
+	update := bson.D{{"$set", bson.D{{"vname", body.Vname}, {"vdesc", body.Vdesc}, {"vmodifiedby", body.Vmodifiedby}}}}
 	updateResult := varientCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
 
 	var result primitive.M
@@ -123,6 +123,7 @@ func DeleteVarient(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res.DeletedCount) // return number of documents deleted
 
 }
+
 // Get All Varient
 
 func GetAllVarient(w http.ResponseWriter, r *http.Request) {

@@ -53,15 +53,17 @@ func CreateBrand(w http.ResponseWriter, r *http.Request) {
 func GetBrand(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)["id"] //get Parameter value as string
 
-	var body brand
-	e := json.NewDecoder(r.Body).Decode(&body)
-	if e != nil {
+	// var body brand
+	// e := json.NewDecoder(r.Body).Decode(&body)
+	// if e != nil {
 
-		fmt.Print(e)
-	}
+	// 	fmt.Print(e)
+	// }
 	var result primitive.M //  an unordered representation of a BSON document which is a Map
-	err := brandCollection.FindOne(context.TODO(), bson.D{{"bid", body.Bid}}).Decode(&result)
+	filter := bson.M{"cid": params}
+	err := brandCollection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
 
 		fmt.Println(err)

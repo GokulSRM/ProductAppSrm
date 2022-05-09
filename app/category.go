@@ -51,15 +51,17 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) {
 func GetCategory(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)["id"] //get Parameter value as string
 
-	var body category
-	e := json.NewDecoder(r.Body).Decode(&body)
-	if e != nil {
+	// var body category
+	// e := json.NewDecoder(r.Body).Decode(&body)
+	// if e != nil {
 
-		fmt.Print(e)
-	}
+	// 	fmt.Print(e)
+	// }
 	var result primitive.M //  an unordered representation of a BSON document which is a Map
-	err := categoryCollection.FindOne(context.TODO(), bson.D{{"cid", body.CId}}).Decode(&result)
+	filter := bson.M{"cid": params}
+	err := categoryCollection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
 
 		fmt.Println(err)
