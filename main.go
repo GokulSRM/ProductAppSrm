@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
+	"ProductApp/app"
 	"log"
 	"net/http"
-	"ProductApp/app"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 	s.HandleFunc("/getAllProduct", app.GetAllProduct).Methods("GET")
 	s.HandleFunc("/getProduct/{id}", app.GetProduct).Methods("POST")
 	s.HandleFunc("/updateProduct", app.UpdateProduct).Methods("PUT")
+	s.HandleFunc("/UpdateProductStatus", app.UpdateProductStatus).Methods("PUT")
 	s.HandleFunc("/deleteProfile/{id}", app.DeleteProduct).Methods("DELETE")
 
 	// Category Routes
@@ -50,7 +52,6 @@ func main() {
 	s.HandleFunc("/UpdateVarient", app.UpdateVarient).Methods("PUT")
 	s.HandleFunc("/UpdateVarientStatus", app.UpdateVarientStatus).Methods("PUT")
 	s.HandleFunc("/DeleteVarient/{id}", app.DeleteVarient).Methods("DELETE")
-
 
 	log.Fatal(http.ListenAndServe(":8000", s)) // Run Server
 }

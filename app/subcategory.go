@@ -26,7 +26,7 @@ type subcategory struct {
 
 var subCategoryCollection = db().Database("ProductApp").Collection("Subcategory") // get collection "users" from db() which returns *mongo.Client
 
-// Create Profile or Signup
+// Create SubCategory
 
 func CreateSubCategory(w http.ResponseWriter, r *http.Request) {
 
@@ -36,18 +36,21 @@ func CreateSubCategory(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&subc) // storing in person variable of type user
 	if err != nil {
 		fmt.Print(err)
+		w.WriteHeader(400)
 	}
 	insertResult, err := subCategoryCollection.InsertOne(context.TODO(), subc)
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(500)
+	} else {
+		fmt.Println("Inserted a single document: ", insertResult)
+		json.NewEncoder(w).Encode(insertResult.InsertedID) // return the mongodb ID of generated document
+		w.WriteHeader(200)
 	}
-
-	fmt.Println("Inserted a single document: ", insertResult)
-	json.NewEncoder(w).Encode(insertResult.InsertedID) // return the mongodb ID of generated document
 
 }
 
-// Get Profile of a particular User by Name
+// Get SubCategory
 
 func GetSubCategory(w http.ResponseWriter, r *http.Request) {
 
@@ -61,18 +64,48 @@ func GetSubCategory(w http.ResponseWriter, r *http.Request) {
 	// 	fmt.Print(e)
 	// }
 	var result primitive.M //  an unordered representation of a BSON document which is a Map
-	filter := bson.M{"cid": params}
+	filter := bson.M{"scid": params}
 	err := subCategoryCollection.FindOne(context.TODO(), filter).Decode(&result)
 	if err != nil {
 
 		fmt.Println(err)
+		json.NewEncoder(w).Encode("No data found!")
 
+	} else {
+		json.NewEncoder(w).Encode(result) // returns a Map containing document
+		w.WriteHeader(200)
 	}
-	json.NewEncoder(w).Encode(result) // returns a Map containing document
 
 }
 
-//Update Profile of User
+// Get All SubCategory
+func GetAllSubCategory(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var results []primitive.M                                          //slice for multiple documents
+	cur, err := subCategoryCollection.Find(context.TODO(), bson.D{{}}) //returns a *mongo.Cursor
+	if err != nil {
+
+		fmt.Println(err)
+		w.WriteHeader(400)
+
+	}
+	for cur.Next(context.TODO()) { //Next() gets the next document for corresponding cursor
+
+		var elem primitive.M
+		err := cur.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+			w.WriteHeader(500)
+		}
+
+		results = append(results, elem) // appending document pointed by Next()
+	}
+	cur.Close(context.TODO()) // close the cursor once stream of documents has exhausted
+	json.NewEncoder(w).Encode(results)
+	w.WriteHeader(200)
+}
+
+//Update SubCategory
 
 func UpdateSubCategory(w http.ResponseWriter, r *http.Request) {
 
@@ -90,6 +123,7 @@ func UpdateSubCategory(w http.ResponseWriter, r *http.Request) {
 	if e != nil {
 
 		fmt.Print(e)
+		w.WriteHeader(400)
 	}
 	filter := bson.D{{"scid", body.ScId}} // converting value to BSON type
 	after := options.After                // for returning updated document
@@ -104,6 +138,8 @@ func UpdateSubCategory(w http.ResponseWriter, r *http.Request) {
 	_ = updateResult.Decode(&result)
 
 	json.NewEncoder(w).Encode(result)
+	w.WriteHeader(200)
+
 }
 
 // Update SubCategory Status
@@ -121,6 +157,7 @@ func UpdateSubCategoryStatus(w http.ResponseWriter, r *http.Request) {
 	if e != nil {
 
 		fmt.Print(e)
+		w.WriteHeader(400)
 	}
 	filter := bson.D{{"scid", body.ScId}} // converting value to BSON type
 	after := options.After                // for returning updated document
@@ -135,9 +172,10 @@ func UpdateSubCategoryStatus(w http.ResponseWriter, r *http.Request) {
 	_ = updateResult.Decode(&result)
 
 	json.NewEncoder(w).Encode(result)
+	w.WriteHeader(200)
 }
 
-//Delete Profile of User
+//Delete SubCategory
 
 func DeleteSubCategory(w http.ResponseWriter, r *http.Request) {
 
@@ -152,31 +190,11 @@ func DeleteSubCategory(w http.ResponseWriter, r *http.Request) {
 	res, err := subCategoryCollection.DeleteOne(context.TODO(), bson.D{{"scid", params}}, opts)
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(400)
+	} else {
+		fmt.Printf("deleted %v documents\n", res.DeletedCount)
+		json.NewEncoder(w).Encode(res.DeletedCount) // return number of documents deleted
+		w.WriteHeader(200)
 	}
-	fmt.Printf("deleted %v documents\n", res.DeletedCount)
-	json.NewEncoder(w).Encode(res.DeletedCount) // return number of documents deleted
 
-}
-
-func GetAllSubCategory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var results []primitive.M                                          //slice for multiple documents
-	cur, err := subCategoryCollection.Find(context.TODO(), bson.D{{}}) //returns a *mongo.Cursor
-	if err != nil {
-
-		fmt.Println(err)
-
-	}
-	for cur.Next(context.TODO()) { //Next() gets the next document for corresponding cursor
-
-		var elem primitive.M
-		err := cur.Decode(&elem)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		results = append(results, elem) // appending document pointed by Next()
-	}
-	cur.Close(context.TODO()) // close the cursor once stream of documents has exhausted
-	json.NewEncoder(w).Encode(results)
 }

@@ -28,12 +28,13 @@ type product struct {
 	Pqty    int     `json:"pqty"`
 	Pmrp    float32 `json:"pmrp"`
 	Pprice  float32 `json:"pprice"`
+	Pstatus bool    `json:"pstatus"`
 	SubProd subprod `json:"subprod"`
 }
 
 var productCollection = db().Database("ProductApp").Collection("Product") // get collection "users" from db() which returns *mongo.Client
 
-// Create Profile or Signup
+// Create Product
 
 func CreateProduct(w http.ResponseWriter, r *http.Request) {
 
@@ -43,18 +44,21 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&prod) // storing in person variable of type user
 	if err != nil {
 		fmt.Print(err)
+		w.WriteHeader(400)
 	}
 	insertResult, err := productCollection.InsertOne(context.TODO(), prod)
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(500)
+	} else {
+		fmt.Println("Inserted a single document: ", insertResult)
+		json.NewEncoder(w).Encode(insertResult.InsertedID) // return the mongodb ID of generated document
+		w.WriteHeader(200)
 	}
-
-	fmt.Println("Inserted a single document: ", insertResult)
-	json.NewEncoder(w).Encode(insertResult.InsertedID) // return the mongodb ID of generated document
 
 }
 
-// Get Profile of a particular User by Name
+// Get Product
 
 func GetProduct(w http.ResponseWriter, r *http.Request) {
 
@@ -78,13 +82,44 @@ func GetProduct(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 
 		fmt.Println(err)
+		json.NewEncoder(w).Encode("No data found!")
 
+	} else {
+		json.NewEncoder(w).Encode(result) // returns a Map containing document
+		w.WriteHeader(200)
 	}
-	json.NewEncoder(w).Encode(result) // returns a Map containing document
 
 }
 
-//Update Profile of User
+// Get All Product
+
+func GetAllProduct(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var results []primitive.M                                      //slice for multiple documents
+	cur, err := productCollection.Find(context.TODO(), bson.D{{}}) //returns a *mongo.Cursor
+	if err != nil {
+
+		fmt.Println(err)
+		w.WriteHeader(400)
+
+	}
+	for cur.Next(context.TODO()) { //Next() gets the next document for corresponding cursor
+
+		var elem primitive.M
+		err := cur.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+			w.WriteHeader(500)
+		}
+
+		results = append(results, elem) // appending document pointed by Next()
+	}
+	cur.Close(context.TODO()) // close the cursor once stream of documents has exhausted
+	json.NewEncoder(w).Encode(results)
+	w.WriteHeader(200)
+}
+
+//Update Product
 
 func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 
@@ -103,6 +138,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 		Pqty    int     `json:"pqty"`    // value that has to be modified
 		Pmrp    float32 `json:"pmrp"`    // value that has to be modified
 		Pprice  float32 `json:"pprice"`  // value that has to be modified
+		Pstatus bool    `json:"pstatus"` // value that has to be modified
 		SubProd subprod `json:"subprod"` // value that has to be modified
 	}
 	var body updateBody
@@ -110,6 +146,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	if e != nil {
 
 		fmt.Print(e)
+		w.WriteHeader(400)
 	}
 	filter := bson.D{{"pid", body.PId}} // converting value to BSON type
 	after := options.After              // for returning updated document
@@ -117,7 +154,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 
 		ReturnDocument: &after,
 	}
-	update := bson.D{{"$set", bson.D{{"pname", body.Pname}, {"pdesc", body.Pdesc}, {"pqty", body.Pqty}, {"pmrp", body.Pmrp}, {"pprice", body.Pprice}, {"subprod", bson.D{{"categoryid", body.SubProd.CategoryId}, {"varientid", body.SubProd.VarientId}, {"subcategoryid", body.SubProd.SubCategoryId}, {"brandid", body.SubProd.BrandId}}}}}}
+	update := bson.D{{"$set", bson.D{{"pname", body.Pname}, {"pdesc", body.Pdesc}, {"pqty", body.Pqty}, {"pmrp", body.Pmrp}, {"pprice", body.Pprice}, {"pstatus", body.Pstatus}, {"subprod", bson.D{{"categoryid", body.SubProd.CategoryId}, {"varientid", body.SubProd.VarientId}, {"subcategoryid", body.SubProd.SubCategoryId}, {"brandid", body.SubProd.BrandId}}}}}}
 	updateResult := productCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
 
 	// update1 := bson.D{{"$set", bson.D{{"age", body.Age}}}}
@@ -127,9 +164,44 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	_ = updateResult.Decode(&result)
 
 	json.NewEncoder(w).Encode(result)
+	w.WriteHeader(200)
+
+}
+// Update Product Status
+
+func UpdateProductStatus(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json")
+
+	type updateBody struct {
+		PId     int     `json:"pid"`     //value that has to be matched
+		Pstatus bool   `json:"pstatus"` // value that has to be modified
+	}
+	var body updateBody
+	e := json.NewDecoder(r.Body).Decode(&body)
+	if e != nil {
+
+		fmt.Print(e)
+		w.WriteHeader(400)
+	}
+	filter := bson.D{{"pid", body.PId}} // converting value to BSON type
+	after := options.After              // for returning updated document
+	returnOpt := options.FindOneAndUpdateOptions{
+
+		ReturnDocument: &after,
+	}
+	update := bson.D{{"$set", bson.D{{"pstatus", body.Pstatus}}}}
+	updateResult := categoryCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
+
+	var result primitive.M
+	_ = updateResult.Decode(&result)
+
+	json.NewEncoder(w).Encode(result)
+	w.WriteHeader(200)
+
 }
 
-//Delete Profile of User
+//Delete Product
 
 func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 
@@ -144,31 +216,11 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	res, err := productCollection.DeleteOne(context.TODO(), bson.D{{"pid", params}}, opts)
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(400)
+	} else {
+		fmt.Printf("deleted %v documents\n", res.DeletedCount)
+		json.NewEncoder(w).Encode(res.DeletedCount) // return number of documents deleted
+		w.WriteHeader(200)
 	}
-	fmt.Printf("deleted %v documents\n", res.DeletedCount)
-	json.NewEncoder(w).Encode(res.DeletedCount) // return number of documents deleted
 
-}
-
-func GetAllProduct(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var results []primitive.M                                      //slice for multiple documents
-	cur, err := productCollection.Find(context.TODO(), bson.D{{}}) //returns a *mongo.Cursor
-	if err != nil {
-
-		fmt.Println(err)
-
-	}
-	for cur.Next(context.TODO()) { //Next() gets the next document for corresponding cursor
-
-		var elem primitive.M
-		err := cur.Decode(&elem)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		results = append(results, elem) // appending document pointed by Next()
-	}
-	cur.Close(context.TODO()) // close the cursor once stream of documents has exhausted
-	json.NewEncoder(w).Encode(results)
 }

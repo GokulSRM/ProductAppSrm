@@ -25,19 +25,19 @@ type category struct {
 
 var categoryCollection = db().Database("ProductApp").Collection("Category") // get collection "users" from db() which returns *mongo.Client
 
-// Create Profile or Signup
+// Create Category
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json") // for adding Content-type
 
-	var cat1 category
-	err := json.NewDecoder(r.Body).Decode(&cat1) // storing in person variable of type user
+	var cat category
+	err := json.NewDecoder(r.Body).Decode(&cat) // storing in person variable of type user
 	if err != nil {
 		fmt.Print(err)
 		w.WriteHeader(400)
 	}
-	insertResult, err := categoryCollection.InsertOne(context.TODO(), cat1)
+	insertResult, err := categoryCollection.InsertOne(context.TODO(), cat)
 	if err != nil {
 		log.Fatal(err)
 		w.WriteHeader(500)
