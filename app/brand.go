@@ -171,7 +171,7 @@ func UpdateBrandStatus(w http.ResponseWriter, r *http.Request) {
 		ReturnDocument: &after,
 	}
 	update := bson.D{{"$set", bson.D{{"bstatus", body.Bstatus}}}}
-	updateResult := categoryCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
+	updateResult := brandCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
 
 	var result primitive.M
 	_ = updateResult.Decode(&result)

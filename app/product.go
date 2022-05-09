@@ -167,6 +167,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
 
 }
+
 // Update Product Status
 
 func UpdateProductStatus(w http.ResponseWriter, r *http.Request) {
@@ -174,8 +175,8 @@ func UpdateProductStatus(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	type updateBody struct {
-		PId     int     `json:"pid"`     //value that has to be matched
-		Pstatus bool   `json:"pstatus"` // value that has to be modified
+		PId     int  `json:"pid"`     //value that has to be matched
+		Pstatus bool `json:"pstatus"` // value that has to be modified
 	}
 	var body updateBody
 	e := json.NewDecoder(r.Body).Decode(&body)
@@ -191,7 +192,7 @@ func UpdateProductStatus(w http.ResponseWriter, r *http.Request) {
 		ReturnDocument: &after,
 	}
 	update := bson.D{{"$set", bson.D{{"pstatus", body.Pstatus}}}}
-	updateResult := categoryCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
+	updateResult := productCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
 
 	var result primitive.M
 	_ = updateResult.Decode(&result)

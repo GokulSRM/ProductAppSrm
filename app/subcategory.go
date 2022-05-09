@@ -148,30 +148,30 @@ func UpdateSubCategoryStatus(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	type updateBody struct {
+	type updateBodystatus struct {
 		ScId     string `json:"scid"`     //value that has to be matched
 		Scstatus bool   `json:"scstatus"` // value that has to be modified
 	}
-	var body updateBody
-	e := json.NewDecoder(r.Body).Decode(&body)
+	var bodys updateBodystatus
+	e := json.NewDecoder(r.Body).Decode(&bodys)
 	if e != nil {
 
 		fmt.Print(e)
 		w.WriteHeader(400)
 	}
-	filter := bson.D{{"scid", body.ScId}} // converting value to BSON type
-	after := options.After                // for returning updated document
-	returnOpt := options.FindOneAndUpdateOptions{
+	filter1 := bson.D{{"scid", bodys.ScId}} // converting value to BSON type
+	after1 := options.After                 // for returning updated document
+	returnOpt1 := options.FindOneAndUpdateOptions{
 
-		ReturnDocument: &after,
+		ReturnDocument: &after1,
 	}
-	update := bson.D{{"$set", bson.D{{"scstatus", body.Scstatus}}}}
-	updateResult := categoryCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
+	update1 := bson.D{{"$set", bson.D{{"scstatus", bodys.Scstatus}}}}
+	updateResult1 := subCategoryCollection.FindOneAndUpdate(context.TODO(), filter1, update1, &returnOpt1)
 
-	var result primitive.M
-	_ = updateResult.Decode(&result)
+	var result1 primitive.M
+	_ = updateResult1.Decode(&result1)
 
-	json.NewEncoder(w).Encode(result)
+	json.NewEncoder(w).Encode(result1)
 	w.WriteHeader(200)
 }
 

@@ -34,8 +34,8 @@ func main() {
 	s.HandleFunc("/GetAllSubCategory", app.GetAllSubCategory).Methods("GET")
 	s.HandleFunc("/GetSubCategory/{id}", app.GetSubCategory).Methods("GET")
 	s.HandleFunc("/UpdateSubCategory", app.UpdateSubCategory).Methods("PUT")
-	s.HandleFunc("/UpdateSubCategoryStatus", app.UpdateCategoryStatus).Methods("PUT")
-	s.HandleFunc("/DeleteSubCategory/{id}", app.DeleteCategory).Methods("DELETE")
+	s.HandleFunc("/UpdateSubCategoryStatus", app.UpdateSubCategoryStatus).Methods("PUT")
+	s.HandleFunc("/DeleteSubCategory/{id}", app.DeleteSubCategory).Methods("DELETE")
 
 	// Brand Routes
 	s.HandleFunc("/CreateBrand", app.CreateBrand).Methods("POST")

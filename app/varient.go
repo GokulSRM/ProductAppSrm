@@ -166,7 +166,7 @@ func UpdateVarientStatus(w http.ResponseWriter, r *http.Request) {
 		ReturnDocument: &after,
 	}
 	update := bson.D{{"$set", bson.D{{"vstatus", body.Vstatus}}}}
-	updateResult := categoryCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
+	updateResult := varientCollection.FindOneAndUpdate(context.TODO(), filter, update, &returnOpt)
 
 	var result primitive.M
 	_ = updateResult.Decode(&result)
