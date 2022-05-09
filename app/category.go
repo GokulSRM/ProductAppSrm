@@ -35,18 +35,21 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&cat1) // storing in person variable of type user
 	if err != nil {
 		fmt.Print(err)
+		w.WriteHeader(400)
 	}
 	insertResult, err := categoryCollection.InsertOne(context.TODO(), cat1)
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(500)
+	} else {
+		fmt.Println("Inserted a single document: ", insertResult)
+		json.NewEncoder(w).Encode(insertResult.InsertedID) // return the mongodb ID of generated document
+		w.WriteHeader(200)
 	}
-
-	fmt.Println("Inserted a single document: ", insertResult)
-	json.NewEncoder(w).Encode(insertResult.InsertedID) // return the mongodb ID of generated document
 
 }
 
-// Get Profile of a particular User by Name
+// Get Category
 
 func GetCategory(w http.ResponseWriter, r *http.Request) {
 
@@ -65,13 +68,46 @@ func GetCategory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 
 		fmt.Println(err)
+		// w.WriteHeader(500)
+		json.NewEncoder(w).Encode("No data found!")
 
+	} else {
+		json.NewEncoder(w).Encode(result) // returns a Map containing document
+		w.WriteHeader(200)
 	}
-	json.NewEncoder(w).Encode(result) // returns a Map containing document
 
 }
 
-//Update Profile of User
+// Get All Category
+
+func GetAllCategory(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var results []primitive.M                                       //slice for multiple documents
+	cur, err := categoryCollection.Find(context.TODO(), bson.D{{}}) //returns a *mongo.Cursor
+	if err != nil {
+
+		fmt.Println(err)
+		w.WriteHeader(400)
+
+	}
+	for cur.Next(context.TODO()) { //Next() gets the next document for corresponding cursor
+
+		var elem primitive.M
+		err := cur.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+			w.WriteHeader(500)
+		}
+
+		results = append(results, elem) // appending document pointed by Next()
+	}
+	cur.Close(context.TODO()) // close the cursor once stream of documents has exhausted
+	json.NewEncoder(w).Encode(results)
+	w.WriteHeader(200)
+
+}
+
+//Update Category
 
 func UpdateCategory(w http.ResponseWriter, r *http.Request) {
 
@@ -88,6 +124,7 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) {
 	if e != nil {
 
 		fmt.Print(e)
+		w.WriteHeader(400)
 	}
 	filter := bson.D{{"cid", body.CId}} // converting value to BSON type
 	after := options.After              // for returning updated document
@@ -102,6 +139,8 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) {
 	_ = updateResult.Decode(&result)
 
 	json.NewEncoder(w).Encode(result)
+	w.WriteHeader(200)
+
 }
 
 // Update Category Status
@@ -119,6 +158,7 @@ func UpdateCategoryStatus(w http.ResponseWriter, r *http.Request) {
 	if e != nil {
 
 		fmt.Print(e)
+		w.WriteHeader(400)
 	}
 	filter := bson.D{{"cid", body.CId}} // converting value to BSON type
 	after := options.After              // for returning updated document
@@ -133,9 +173,11 @@ func UpdateCategoryStatus(w http.ResponseWriter, r *http.Request) {
 	_ = updateResult.Decode(&result)
 
 	json.NewEncoder(w).Encode(result)
+	w.WriteHeader(200)
+
 }
 
-//Delete Profile of User
+//Delete Category
 
 func DeleteCategory(w http.ResponseWriter, r *http.Request) {
 
@@ -150,31 +192,11 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) {
 	res, err := categoryCollection.DeleteOne(context.TODO(), bson.D{{"cid", params}}, opts)
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(400)
+	} else {
+		fmt.Printf("deleted %v documents\n", res.DeletedCount)
+		json.NewEncoder(w).Encode(res.DeletedCount) // return number of documents deleted
+		w.WriteHeader(200)
 	}
-	fmt.Printf("deleted %v documents\n", res.DeletedCount)
-	json.NewEncoder(w).Encode(res.DeletedCount) // return number of documents deleted
 
-}
-
-func GetAllCategory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var results []primitive.M                                       //slice for multiple documents
-	cur, err := categoryCollection.Find(context.TODO(), bson.D{{}}) //returns a *mongo.Cursor
-	if err != nil {
-
-		fmt.Println(err)
-
-	}
-	for cur.Next(context.TODO()) { //Next() gets the next document for corresponding cursor
-
-		var elem primitive.M
-		err := cur.Decode(&elem)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		results = append(results, elem) // appending document pointed by Next()
-	}
-	cur.Close(context.TODO()) // close the cursor once stream of documents has exhausted
-	json.NewEncoder(w).Encode(results)
 }

@@ -73,7 +73,7 @@ func GetBrand(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//Update Brand of User
+//Update Brand 
 
 func UpdateBrand(w http.ResponseWriter, r *http.Request) {
 
@@ -139,7 +139,7 @@ func UpdateBrandStatus(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(result)
 }
 
-//Delete Brand of User
+//Delete Brand 
 
 func DeleteBrand(w http.ResponseWriter, r *http.Request) {
 
