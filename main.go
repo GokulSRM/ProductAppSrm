@@ -14,12 +14,12 @@ func main() {
 	s := route.PathPrefix("/api").Subrouter() //Base Path
 
 	// Product Routes
-	s.HandleFunc("/createProduct", app.CreateProduct).Methods("POST")
-	s.HandleFunc("/getAllProduct", app.GetAllProduct).Methods("GET")
-	s.HandleFunc("/getProduct/{id}", app.GetProduct).Methods("POST")
-	s.HandleFunc("/updateProduct", app.UpdateProduct).Methods("PUT")
+	s.HandleFunc("/CreateProduct", app.CreateProduct).Methods("POST")
+	s.HandleFunc("/GetAllProduct", app.GetAllProduct).Methods("GET")
+	s.HandleFunc("/GetProduct/{id}", app.GetProduct).Methods("GET")
+	s.HandleFunc("/UpdateProduct", app.UpdateProduct).Methods("PUT")
 	s.HandleFunc("/UpdateProductStatus", app.UpdateProductStatus).Methods("PUT")
-	s.HandleFunc("/deleteProfile/{id}", app.DeleteProduct).Methods("DELETE")
+	s.HandleFunc("/DeleteProduct/{id}", app.DeleteProduct).Methods("DELETE")
 
 	// Category Routes
 	s.HandleFunc("/CreateCategory", app.CreateCategory).Methods("POST")
