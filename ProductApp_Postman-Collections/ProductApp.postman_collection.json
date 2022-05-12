@@ -1,0 +1,857 @@
+{
+	"info": {
+		"_postman_id": "d55dc9b3-9c7a-48fc-a372-d99da4ff1158",
+		"name": "ProductApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "http://localhost:8000/api/CreateCategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cid\":\"A009\",\r\n\t\"cname\":\"Home Applicance\",\r\n\t\"cdesc\":\"All Kitchen, home and lawn accessories and products\",\r\n\t\"ccreatedby\":\"Gokul\",\r\n\t\"cmodifiedby\":\"Gokul\",\r\n\t\"cstatus\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/CreateCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"CreateCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetAllCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/GetAllCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetAllCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetCategory/",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/GetCategory/A009",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetCategory",
+								"A009"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateCategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cid\": \"A123\",\r\n    \"cname\": \"Electronics\",\r\n    \"cdesc\": \"All Electrical products such as Mobile, Laptop, Automobile, Power Tools, Electrical items and gadgets\",\r\n    \"cmodifiedby\": \"Subeesh\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateCategoryStatus",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cid\":\"A123\",\r\n    \"cstatus\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateCategoryStatus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateCategoryStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/DeleteCategory/",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/DeleteCategory/A009",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"DeleteCategory",
+								"A009"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SubCategory",
+			"item": [
+				{
+					"name": "http://localhost:8000/api/CreateSubCategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scid\":\"B056\",\r\n    \"cid\":\"A009\",\r\n\t\"scname\":\"Washing Machine\",\r\n\t\"scdesc\":\"All washing machine products\",\r\n\t\"sccreatedby\":\"Sachin\",\r\n\t\"scmodifiedby\":\"Sachin\",\r\n\t\"scstatus\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/CreateSubCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"CreateSubCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetAllSubCategory",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scid\":\"B056\",\r\n    \"cid\":\"A009\",\r\n\t\"scname\":\"Washing Machine\",\r\n\t\"scdesc\":\"All washing machine products\",\r\n\t\"sccreatedby\":\"Sachin\",\r\n\t\"scmodifiedby\":\"Sachin\",\r\n\t\"scstatus\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/GetAllSubCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetAllSubCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetSubCategory/",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scid\":\"B056\",\r\n    \"cid\":\"A009\",\r\n\t\"scname\":\"Washing Machine\",\r\n\t\"scdesc\":\"All washing machine products\",\r\n\t\"sccreatedby\":\"Sachin\",\r\n\t\"scmodifiedby\":\"Sachin\",\r\n\t\"scstatus\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/GetSubCategory/B056",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetSubCategory",
+								"B056"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/DeleteSubCategory/",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scid\":\"B056\",\r\n    \"cid\":\"A009\",\r\n\t\"scname\":\"Washing Machine\",\r\n\t\"scdesc\":\"All washing machine products\",\r\n\t\"sccreatedby\":\"Sachin\",\r\n\t\"scmodifiedby\":\"Sachin\",\r\n\t\"scstatus\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/DeleteSubCategory/B056",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"DeleteSubCategory",
+								"B056"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateSubCategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scid\":\"B056\",\r\n    \"cid\":\"A009\",\r\n\t\"scname\":\"Air Conditioner\",\r\n\t\"scdesc\":\"All Air Conditioner products\",\r\n\t\"scmodifiedby\":\"Gokul\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateSubCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateSubCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateSubCategoryStatus",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scid\":\"B056\",\r\n    \"scstatus\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateSubCategoryStatus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateSubCategoryStatus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Brand",
+			"item": [
+				{
+					"name": "http://localhost:8000/api/CreateBrand",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bid\":\"C034\",\r\n    \"scid\":\"B056\",\r\n    \"cid\":\"A009\",\r\n\t\"bname\":\"LG\",\r\n\t\"bdesc\":\"LG group of products USA\",\r\n\t\"bcreatedby\":\"Michael\",\r\n\t\"bmodifiedby\":\"Michael\",\r\n\t\"bstatus\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/CreateBrand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"CreateBrand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetAllBrand",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/GetAllBrand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetAllBrand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetBrand/",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/GetBrand/C034",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetBrand",
+								"C034"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/DeleteBrand/",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bid\":\"C034\",\r\n    \"scid\":\"B056\",\r\n    \"cid\":\"A009\",\r\n\t\"scname\":\"LG\",\r\n\t\"scdesc\":\"LG group of products USA\",\r\n\t\"sccreatedby\":\"Michael\",\r\n\t\"scmodifiedby\":\"Michael\",\r\n\t\"scstatus\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/DeleteBrand/C034",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"DeleteBrand",
+								"C034"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateBrand",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"bdesc\": \"LG group of products USA\",\r\n        \"bid\": \"C034\",\r\n        \"bmodifiedby\": \"Gokul\",\r\n        \"bname\": \"LG\",\r\n        \"cid\": \"A009\",\r\n        \"scid\": \"B056\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateBrand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateBrand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateBrandStatus",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"bid\": \"C034\",\r\n        \"bstatus\":false\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateBrandStatus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateBrandStatus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Varient",
+			"item": [
+				{
+					"name": "http://localhost:8000/api/CreateVarient",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"vid\":\"D3870\",\r\n\t\"vname\":\"Automatic\",\r\n\t\"vdesc\":\"Auto function with single click or button\",\r\n\t\"vcreatedby\":\"Subeesh\",\r\n\t\"vmodifiedby\":\"Subeesh\",\r\n\t\"vstatus\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/CreateVarient",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"CreateVarient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetAllVarient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/GetAllVarient",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetAllVarient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetVarient/",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/GetVarient/D3870",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetVarient",
+								"D3870"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/DeleteVarient/",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/DeleteVarient/D3870",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"DeleteVarient",
+								"D3870"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateVarient",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"vdesc\": \"Auto function with single click or button\",\r\n    \"vid\": \"D3870\",\r\n    \"vmodifiedby\": \"Gokul\",\r\n    \"vname\": \"Automatic\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateVarient",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateVarient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateVarientStatus",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"vid\": \"D3870\",\r\n    \"vstatus\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateVarientStatus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateVarientStatus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "http://localhost:8000/api/CreateProduct",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pid\": \"P2001\",\r\n    \"pname\": \"LG 9Kg Washing Machine\",\r\n    \"pdesc\": \"Fully automatic and 7 types of washing styles with rinsing and drying\",\r\n    \"pqty\": 20,\r\n    \"pmrp\": 45800.45,\r\n    \"pprice\": 43600.80,\r\n    \"pstatus\": true,\r\n    \"subprod\": {\r\n        \"cid\": \"A009\",\r\n        \"scid\": \"B056\",\r\n        \"bid\": \"C034\",\r\n        \"vid\": \"D3870\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/CreateProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"CreateProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateProduct",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pid\": \"P2001\",\r\n    \"pname\": \"LG 9Kg Washing Machine\",\r\n    \"pdesc\": \"Fully automatic and 7 types of washing styles with rinsing and drying\",\r\n    \"pqty\": 20,\r\n    \"pmrp\": 45800.45,\r\n    \"pprice\": 43200.80,\r\n    \"subprod\": {\r\n        \"categoryid\": \"A009\",\r\n        \"subcategoryid\": \"B056\",\r\n        \"brandid\": \"C034\",\r\n        \"varientid\": \"D3870\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/UpdateProductStatus",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pid\": \"P2001\",\r\n    \"pstatus\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/UpdateProductStatus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"UpdateProductStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetAllProduct",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/GetAllProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetAllProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/GetProduct/",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/GetProduct/P2001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"GetProduct",
+								"P2001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8000/api/DeleteProduct/",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/DeleteProduct/P2001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"DeleteProduct",
+								"P2001"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
