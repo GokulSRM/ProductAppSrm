@@ -59,7 +59,6 @@ func GetCategory(w http.ResponseWriter, r *http.Request) {
 	// var body category
 	// e := json.NewDecoder(r.Body).Decode(&body)
 	// if e != nil {
-
 	// 	fmt.Print(e)
 	// }
 	var result primitive.M //  an unordered representation of a BSON document which is a Map
@@ -183,7 +182,6 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)["id"] //get Parameter value as string
-
 	// _id, err := primitive.ObjectIDFromHex(params) // convert params to mongodb Hex ID
 	// if err != nil {
 	// 	fmt.Printf(err.Error())
