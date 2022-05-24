@@ -7,19 +7,20 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// struct for storing data
+// struct for storing data ,min=3,max=20,required
 type category struct {
-	CId         string `json:"cid"`
-	Cname       string `json:"cname"`
-	Cdesc       string `json:"cdesc"`
-	Ccreatedby  string `json:"ccreatedby"`
-	Cmodifiedby string `json:"cmodifiedby"`
+	CId         string `json:"cid" validate:"required,alphanum,min=4,max=10"`
+	Cname       string `json:"cname" validate:"required,min=3,max=20"`
+	Cdesc       string `json:"cdesc" validate:"required,min=5,max=100"`
+	Ccreatedby  string `json:"ccreatedby" validate:"required,min=3,max=20"`
+	Cmodifiedby string `json:"cmodifiedby" validate:"required,min=3,max=20"`
 	Cstatus     bool   `json:"cstatus"`
 }
 
@@ -28,23 +29,43 @@ var categoryCollection = db().Database("ProductApp").Collection("Category") // g
 // Create Category
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) {
+	validate := validator.New()
 
 	w.Header().Set("Content-Type", "application/json") // for adding Content-type
 
 	var cat category
-	err := json.NewDecoder(r.Body).Decode(&cat) // storing in person variable of type user
+
+	err := json.NewDecoder(r.Body).Decode(&cat) // storing in category variable of type cat
 	if err != nil {
 		fmt.Print(err)
 		w.WriteHeader(400)
 	}
-	insertResult, err := categoryCollection.InsertOne(context.TODO(), cat)
-	if err != nil {
-		log.Fatal(err)
-		w.WriteHeader(500)
+	errv := validate.Struct(cat)
+	if errv != nil {
+		fmt.Println(errv)
+		w.WriteHeader(401)
 	} else {
-		fmt.Println("Inserted a single document: ", insertResult)
-		json.NewEncoder(w).Encode(insertResult.InsertedID) // return the mongodb ID of generated document
-		w.WriteHeader(200)
+		count, errc := categoryCollection.CountDocuments(context.TODO(), bson.D{{"cid", cat.CId}})
+		fmt.Println("check count of cid:", count)
+		if errc != nil {
+			log.Fatal(err)
+		} else {
+			if count == 0 {
+				insertResult, err := categoryCollection.InsertOne(context.TODO(), cat)
+				if err != nil {
+					log.Fatal(err)
+					w.WriteHeader(500)
+				} else {
+					fmt.Println("Inserted a single document: ", insertResult)
+					json.NewEncoder(w).Encode(insertResult.InsertedID) // return the mongodb ID of generated document
+					w.WriteHeader(201)
+				}
+			} else {
+				json.NewEncoder(w).Encode("Data redundancy!")
+			}
+
+		}
+
 	}
 
 }
@@ -67,7 +88,7 @@ func GetCategory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 
 		fmt.Println(err)
-		// w.WriteHeader(500)
+		w.WriteHeader(204)
 		json.NewEncoder(w).Encode("No data found!")
 
 	} else {
