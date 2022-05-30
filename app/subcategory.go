@@ -38,6 +38,9 @@ func CreateSubCategory(w http.ResponseWriter, r *http.Request) {
 		fmt.Print(err)
 		w.WriteHeader(400)
 	}
+
+	scount, errs := categoryCollection.CountDocuments(context.TODO(), bson.D{{"cid", subc.CId}})
+
 	insertResult, err := subCategoryCollection.InsertOne(context.TODO(), subc)
 	if err != nil {
 		log.Fatal(err)
