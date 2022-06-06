@@ -45,12 +45,12 @@ func CreateVarient(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(401)
 		json.NewEncoder(w).Encode("Validation error")
 	} else {
-		count, errv := varientCollection.CountDocuments(context.TODO(), bson.D{{"vid", varient.VId}})
-		fmt.Println("check count of cid:", count)
+		vcount, errv := varientCollection.CountDocuments(context.TODO(), bson.D{{"vid", varient.VId}})
+		fmt.Println("check count of cid:", vcount)
 		if errv != nil {
 			log.Fatal(errv)
 		} else {
-			if count == 0 {
+			if vcount == 0 {
 				insertResult, err := varientCollection.InsertOne(context.TODO(), varient)
 				if err != nil {
 					log.Fatal(err)

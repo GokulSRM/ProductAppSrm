@@ -30,8 +30,9 @@ var categoryCollection = db().Database("ProductApp").Collection("Category") // g
 // Create Category
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) {
-	validate := validator.New()
+	
 	w.Header().Set("Content-Type", "application/json") // for adding Content-type
+	validate := validator.New()
 	var cat category
 	err := json.NewDecoder(r.Body).Decode(&cat) // storing in category variable of type cat
 	if err != nil {
