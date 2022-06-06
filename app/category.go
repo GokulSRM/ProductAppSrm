@@ -31,11 +31,8 @@ var categoryCollection = db().Database("ProductApp").Collection("Category") // g
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) {
 	validate := validator.New()
-
 	w.Header().Set("Content-Type", "application/json") // for adding Content-type
-
 	var cat category
-
 	err := json.NewDecoder(r.Body).Decode(&cat) // storing in category variable of type cat
 	if err != nil {
 		fmt.Print(err)
@@ -50,7 +47,7 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) {
 		count, errc := categoryCollection.CountDocuments(context.TODO(), bson.D{{"cid", cat.CId}})
 		fmt.Println("check count of cid:", count)
 		if errc != nil {
-			log.Fatal(err)
+			log.Fatal(errc)
 		} else {
 			if count == 0 {
 				insertResult, err := categoryCollection.InsertOne(context.TODO(), cat)
@@ -63,19 +60,15 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) {
 					w.WriteHeader(201)
 				}
 			} else {
-				json.NewEncoder(w).Encode("Data redundancy!")
+				json.NewEncoder(w).Encode("Dupilicate Category!")
 			}
-
 		}
-
 	}
-
 }
 
 // Get Category
 
 func GetCategory(w http.ResponseWriter, r *http.Request) {
-
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)["id"] //get Parameter value as string
 	is_alphanumeric := regexp.MustCompile(`^[a-zA-Z0-9]*$`).MatchString(params)
@@ -93,16 +86,14 @@ func GetCategory(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			w.WriteHeader(204)
 			json.NewEncoder(w).Encode("No data found!")
-
 		} else {
 			json.NewEncoder(w).Encode(result) // returns a Map containing document
 			w.WriteHeader(200)
 		}
 	} else {
-		json.NewEncoder(w).Encode("Please enter the correct Category ID should be alphanumeric!")
+		json.NewEncoder(w).Encode("Please enter the correct Category ID!")
 		w.WriteHeader(204)
 	}
-
 }
 
 // Get All Category
@@ -112,32 +103,26 @@ func GetAllCategory(w http.ResponseWriter, r *http.Request) {
 	var results []primitive.M                                       //slice for multiple documents
 	cur, err := categoryCollection.Find(context.TODO(), bson.D{{}}) //returns a *mongo.Cursor
 	if err != nil {
-
 		fmt.Println(err)
 		w.WriteHeader(400)
-
 	}
 	for cur.Next(context.TODO()) { //Next() gets the next document for corresponding cursor
-
 		var elem primitive.M
 		err := cur.Decode(&elem)
 		if err != nil {
 			log.Fatal(err)
 			w.WriteHeader(500)
 		}
-
 		results = append(results, elem) // appending document pointed by Next()
 	}
 	cur.Close(context.TODO()) // close the cursor once stream of documents has exhausted
 	json.NewEncoder(w).Encode(results)
 	w.WriteHeader(200)
-
 }
 
 //Update Category
 
 func UpdateCategory(w http.ResponseWriter, r *http.Request) {
-
 	w.Header().Set("Content-Type", "application/json")
 	validate := validator.New()
 
@@ -154,9 +139,7 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) {
 		fmt.Print(e)
 		w.WriteHeader(400)
 	}
-
 	errv := validate.Struct(body) // update struct validation
-
 	if errv != nil {
 		fmt.Println(errv)
 		w.WriteHeader(401)
@@ -177,13 +160,11 @@ func UpdateCategory(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(result)
 		w.WriteHeader(200)
 	}
-
 }
 
 // Update Category Status
 
 func UpdateCategoryStatus(w http.ResponseWriter, r *http.Request) {
-
 	w.Header().Set("Content-Type", "application/json")
 	validate := validator.New()
 
@@ -199,7 +180,6 @@ func UpdateCategoryStatus(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(400)
 	}
 	errv := validate.Struct(body) // update status struct validation
-
 	if errv != nil {
 		fmt.Println(errv)
 		w.WriteHeader(401)
@@ -230,7 +210,6 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)["id"] //get Parameter value as string
 	is_alphanumeric := regexp.MustCompile(`^[a-zA-Z0-9]*$`).MatchString(params)
-
 	// _id, err := primitive.ObjectIDFromHex(params) // convert params to mongodb Hex ID
 	// if err != nil {
 	// 	fmt.Printf(err.Error())
@@ -247,7 +226,7 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(200)
 		}
 	} else {
-		json.NewEncoder(w).Encode("Please enter the correct Category ID should be alphanumeric!")
+		json.NewEncoder(w).Encode("Please enter the correct Category ID!")
 		w.WriteHeader(204)
 	}
 
