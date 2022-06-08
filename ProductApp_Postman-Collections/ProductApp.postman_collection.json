@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"cid\":\"A009\",\r\n\t\"cname\":\"Home Applicance\",\r\n\t\"cdesc\":\"All Kitchen, home and lawn accessories and products\",\r\n\t\"ccreatedby\":\"Gokul\",\r\n\t\"cmodifiedby\":\"Gokul\",\r\n\t\"cstatus\":true\r\n}",
+							"raw": "{\r\n    \"cid\":\"A001\",\r\n\t\"cname\":\"Grocery\",\r\n\t\"cdesc\":\"All home and food products\",\r\n\t\"ccreatedby\":\"Gokul\",\r\n\t\"cmodifiedby\":\"Gokul\",\r\n\t\"cstatus\":true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
